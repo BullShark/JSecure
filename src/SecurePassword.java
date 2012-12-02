@@ -23,6 +23,18 @@ public class SecurePassword implements BackendReqs {
         this.isPunc = isPunc;
     }
 
+    public boolean getAlpha() {
+        return isAlpha;
+    }
+
+    public boolean getNumeric() {
+        return isNumeric;
+    }
+
+    public boolean getPunc() {
+        return isPunc;
+    }
+
     public String toString() {
         return pass;
     }
