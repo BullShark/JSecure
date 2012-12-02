@@ -8,14 +8,6 @@
 public class SecurePassword implements BackendReqs {
     private String pass;
     private boolean isAlpha, isNumeric, isPunc;
-
-    public SecurePassword() {
-        pass = "";
-        isAlpha = false;
-        isNumeric = false;
-        isPunc = false;
-    }
-
     @Override
     public void setAlpha(boolean isAlpha) {
         this.isAlpha = isAlpha;
@@ -31,7 +23,6 @@ public class SecurePassword implements BackendReqs {
         this.isPunc = isPunc;
     }
 
-    @Override
     public String toString() {
         return pass;
     }
