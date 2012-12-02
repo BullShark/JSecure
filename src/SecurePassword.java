@@ -7,19 +7,20 @@
  */
 public class SecurePassword implements BackendReqs {
     private String pass;
+    private boolean isAlpha, isNumeric, isPunc;
     @Override
     public void setAlpha(boolean isAlpha) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.isAlpha = isAlpha;
     }
 
     @Override
     public void setNumeric(boolean isNumeric) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.isNumeric = isNumeric;
     }
 
     @Override
     public void setPunctuation(boolean isPunc) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.isPunc = isPunc;
     }
 
     public String toString() {
