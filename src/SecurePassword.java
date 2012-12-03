@@ -60,7 +60,7 @@ public class SecurePassword implements BackendReqs {
 
     @Override
     public void setLength(int len) {
-        passLength = le;
+        passLength = len;
     }
 
     @Override
