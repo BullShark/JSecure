@@ -3,12 +3,11 @@
  * User: JKillNazi
  * Date: 12/3/12
  * Time: 6:36 PM
- * To change this template use File | Settings | File Templates.
  */
 
 import jargs.gnu.CmdLineParser;
 
-public class Main extends CmdLineParser {
+public class MainCLI extends CmdLineParser {
 
     private static class Parser extends CmdLineParser {
         /**
@@ -43,6 +42,11 @@ public class Main extends CmdLineParser {
     }
 
     public static void main(String[] args) {
+        /**
+         * Main method,here everything will take place(parsing of the options,generation of the secure password,etc...)
+         */
+
+
         int EXIT_STATUS=0;
         /**EXIT STATUES:
          *  0 = no errors
@@ -51,20 +55,16 @@ public class Main extends CmdLineParser {
          *  3 = unknown error
          * */
 
-        /**
-        * Main method,here everithing will take place(parsing of the options,generation of the secure password,etc...)
-        */
-
         Parser parser = new Parser(); //The Parser class will take care of all the options
         SecurePassword pass = new SecurePassword();
 
         try { //Try to parse the args
             parser.parse(args);
         } catch (IllegalOptionValueException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             EXIT_STATUS=1;
         } catch (UnknownOptionException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             EXIT_STATUS=2;
         }
 
@@ -90,7 +90,7 @@ public class Main extends CmdLineParser {
             * "pass.setNumeric((Boolean) parser.getOptionValue(parser.optNum));"
             *will set the isNumeric to NULL!
             *Be sure to check if we pass NULL to a Setter to make it "ignore" and leave the default option!
-            * */
+            **/
 
             /**SET THE NEEDED PARAMETERS TO GENERATE THE PASSWORD*/
             pass.setAlpha((Boolean) parser.getOptionValue(parser.optAlpha)); //Set isAlpha
