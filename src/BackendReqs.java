@@ -9,5 +9,8 @@ public interface BackendReqs {
     void setAlpha(boolean isAlpha);
     void setNumeric(boolean isNumeric);
     void setPunctuation(boolean isPunc);
+    boolean getNumeric();
+    boolean getAlpha();
+    boolean getPunctuation();
     String toString();
 }
