@@ -45,7 +45,7 @@ public class MainCLI extends CmdLineParser {
         /**
          * Main method,here everything will take place(parsing of the options,generation of the secure password,etc...)
          */
-
+        //TODO: fix the "NO ARGS==ULLPOINT EXCEPTION"
 
         int EXIT_STATUS=0;
         /**EXIT STATUES:
@@ -60,43 +60,53 @@ public class MainCLI extends CmdLineParser {
 
         try { //Try to parse the args
             parser.parse(args);
+
+            if (((Boolean) parser.getOptionValue(parser.optHelp))) { //IF the -h | --help option has been used IGNORE the others and show the message,then quit
+                System.out.println("JSecure is a OPEN SOURCE software written in java that helps you generating strong passwords based on your needs.\n= AVAIABLE OPTIONS =\n" +
+                        " -"+parser.optGUI.shortForm()  +" | --"+parser.optGUI.longForm()    +" = asks JSecure to show its nice GUI (DEFAULT <???>).\n" +
+                        " -"+parser.optVvv.shortForm()  +" | --"+parser.optVvv.longForm()    +" = tells JSecure to speak loud (DEFAULT <???>).\n" +
+                        " -"+parser.optNum.shortForm()  +" | --"+parser.optNum.longForm()    +" = allows JSecure to use numbers while generating the password (DEFAULT <???>).\n" +
+                        " -"+parser.optAlpha.shortForm()+" | --"+parser.optAlpha.longForm()  +" = allows JSecure to use letters while generating the password (DEFAULT <???>).\n" +
+                        " -"+parser.optPunct.shortForm()  +" | --"+parser.optPunct.longForm()+" = allows JSecure to use punctuation characters while generating the password (DEFAULT <???>).\n" +
+                        " -"+parser.optLen.shortForm()+" | --"+parser.optLen.longForm()+" <value>"+" = tells JSecure the wished length for the password (DEFAULT: <???>).\n" +
+                        " -"+parser.optHelp.shortForm()+" | --"+parser.optHelp.longForm()    +" = asks JSecure to show you this help menu.\n" +
+                        " -? | --credits "                                                   +" = asks to JSecure to show the credits/about informations.\n" +    //TODO:credits/about option
+                        "\nUSAGE: java Main <options> \n" +
+                        "       java -jar JSecure.jar <options>");
+            } else { //ELSE get the values from the other options
+
+                /*
+                *========================NOTE========================
+                *If an option has not been used it returns NULL. So let's say i run:
+                *  "java -jar JSecure.jar -a -l 10 -p"
+                *-n will be null,so:
+                * "pass.setNumeric((Boolean) parser.getOptionValue(parser.optNum));"
+                *will set the isNumeric to NULL!
+                *Be sure to check if we pass NULL to a Setter to make it "ignore" and leave the default option!
+                **/
+
+                /**SET THE NEEDED PARAMETERS TO GENERATE THE PASSWORD*/
+                pass.setAlpha((Boolean) parser.getOptionValue(parser.optAlpha)); //Set isAlpha
+                pass.setNumeric((Boolean) parser.getOptionValue(parser.optNum)); //Set isNumeric
+                pass.setPunctuation((Boolean) parser.getOptionValue(parser.optPunct)); //Set isPunc
+                pass.setLength((Integer) parser.getOptionValue(parser.optLen)); //Set passLength
+            }
+
         } catch (IllegalOptionValueException e) {
             //e.printStackTrace();
+            System.out.println("USAGE: java Main -h \n " +
+                    "java -jar JSecure.jar -h");
             EXIT_STATUS=1;
         } catch (UnknownOptionException e) {
             //e.printStackTrace();
+            System.out.println("USAGE: java Main -h \n " +
+                    "java -jar JSecure.jar -h");
             EXIT_STATUS=2;
-        }
-
-        if (((Boolean) parser.getOptionValue(parser.optHelp))) { //IF the -h | --help option has been used IGNORE the others and show the message,then quit
-            System.out.println("JSecure is a OPEN SOURCE software written in java that helps you generating strong passwords based on your needs.\n= AVAIABLE OPTIONS =\n" +
-                    " -"+parser.optGUI.shortForm()  +" | --"+parser.optGUI.longForm()    +" = asks JSecure to show its nice GUI (DEFAULT <???>).\n" +
-                    " -"+parser.optVvv.shortForm()  +" | --"+parser.optVvv.longForm()    +" = tells JSecure to speak loud (DEFAULT <???>).\n" +
-                    " -"+parser.optNum.shortForm()  +" | --"+parser.optNum.longForm()    +" = allows JSecure to use numbers while generating the password (DEFAULT <???>).\n" +
-                    " -"+parser.optAlpha.shortForm()+" | --"+parser.optAlpha.longForm()  +" = allows JSecure to use letters while generating the password (DEFAULT <???>).\n" +
-                    " -"+parser.optPunct.shortForm()  +" | --"+parser.optPunct.longForm()+" = allows JSecure to use punctuation characters while generating the password (DEFAULT <???>).\n" +
-                    " -"+parser.optLen.shortForm()+" | --"+parser.optLen.longForm()+" <value>"+" = tells JSecure the wished length for the password (DEFAULT: <???>).\n" +
-                    " -"+parser.optHelp.shortForm()+" | --"+parser.optHelp.longForm()    +" = asks JSecure to show you this help menu.\n" +
-                    " -? | --credits "                                                   +" = asks to JSecure to show the credits/about informations.\n" +    //TODO:credits/about option
-                    "\nUSAGE: java Main <options> \n" +
-                    "       java -jar JSecure.jar <options>");
-        } else { //ELSE get the values from the other options
-
-            /*
-            *========================NOTE========================
-            *If an option has not been used it returns NULL. So let's say i run:
-            *  "java -jar JSecure.jar -a -l 10 -p"
-            *-n will be null,so:
-            * "pass.setNumeric((Boolean) parser.getOptionValue(parser.optNum));"
-            *will set the isNumeric to NULL!
-            *Be sure to check if we pass NULL to a Setter to make it "ignore" and leave the default option!
-            **/
-
-            /**SET THE NEEDED PARAMETERS TO GENERATE THE PASSWORD*/
-            pass.setAlpha((Boolean) parser.getOptionValue(parser.optAlpha)); //Set isAlpha
-            pass.setNumeric((Boolean) parser.getOptionValue(parser.optNum)); //Set isNumeric
-            pass.setPunctuation((Boolean) parser.getOptionValue(parser.optPunct)); //Set isPunc
-            pass.setLength((Integer) parser.getOptionValue(parser.optLen)); //Set passLength
+        } catch (NullPointerException e) {
+            //e.printStackTrace();
+            System.out.println("USAGE: java Main -h \n " +
+                    "java -jar JSecure.jar -h");
+            EXIT_STATUS=1;
         }
 
         System.exit(EXIT_STATUS);
