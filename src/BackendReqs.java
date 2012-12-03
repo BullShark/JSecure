@@ -1,9 +1,5 @@
 /**
- * Created with IntelliJ IDEA.
- * User: bull
- * Date: 12/1/12
- * Time: 10:23 PM
- * To change this template use File | Settings | File Templates.
+ * todo insert description here
  * todo insert GPLv3 here
  */
 public interface BackendReqs {
