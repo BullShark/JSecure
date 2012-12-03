@@ -94,21 +94,16 @@ public class MainCLI extends CmdLineParser {
 
         } catch (IllegalOptionValueException e) {
             //e.printStackTrace();
-            System.out.println("USAGE: java Main -h \n " +
-                    "java -jar JSecure.jar -h");
             EXIT_STATUS=1;
         } catch (UnknownOptionException e) {
             //e.printStackTrace();
-            System.out.println("USAGE: java Main -h \n " +
-                    "java -jar JSecure.jar -h");
             EXIT_STATUS=2;
         } catch (NullPointerException e) {
             //e.printStackTrace();
-            System.out.println("USAGE: java Main -h \n " +
-                    "java -jar JSecure.jar -h");
             EXIT_STATUS=1;
         }
-
+        if(EXIT_STATUS != 0) System.out.println("USAGE: java Main -h \n " +
+                "java -jar JSecure.jar -h");
         System.exit(EXIT_STATUS);
     }
 
