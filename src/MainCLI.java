@@ -12,7 +12,6 @@ public class MainCLI extends CmdLineParser {
     private static class Parser extends CmdLineParser {
         /**
          * Initialize all the possible arguments(short and long way)
-         * -g | --gui = asks JSecure to show its nice GUI (DEFAULT: <???>)
          * -v | --verbose = tells JSecure to speak loud (DEFAULT: <???>)
          * -n | --numeric = allows JSecure to use numbers while generating the password (DEFAULT: <???>)
          * -a | --alpha = allows JSecure to use letters while generating the password (DEFAULT: <???>)
@@ -21,7 +20,6 @@ public class MainCLI extends CmdLineParser {
          * -h | --help = asks for JSecure to show you this help menu
          */
 
-        CmdLineParser.Option optGUI;
         CmdLineParser.Option optVvv;
         CmdLineParser.Option optLen;
         CmdLineParser.Option optAlpha;
@@ -31,7 +29,6 @@ public class MainCLI extends CmdLineParser {
         //TODO: DICTIONARY and SCRUBBLED OPTIONS
 
         public Parser() {
-            optGUI = this.addBooleanOption('g',"gui");
             optVvv = this.addBooleanOption('v',"verbose");
             optAlpha = this.addBooleanOption('a',"alpha");
             optNum = this.addBooleanOption('n',"numeric");
@@ -63,7 +60,6 @@ public class MainCLI extends CmdLineParser {
 
             if (((Boolean) parser.getOptionValue(parser.optHelp))) { //IF the -h | --help option has been used IGNORE the others and show the message,then quit
                 System.out.println("JSecure is a OPEN SOURCE software written in java that helps you generating strong passwords based on your needs.\n= AVAIABLE OPTIONS =\n" +
-                        " -"+parser.optGUI.shortForm()  +" | --"+parser.optGUI.longForm()    +" = asks JSecure to show its nice GUI (DEFAULT <???>).\n" +
                         " -"+parser.optVvv.shortForm()  +" | --"+parser.optVvv.longForm()    +" = tells JSecure to speak loud (DEFAULT <???>).\n" +
                         " -"+parser.optNum.shortForm()  +" | --"+parser.optNum.longForm()    +" = allows JSecure to use numbers while generating the password (DEFAULT <???>).\n" +
                         " -"+parser.optAlpha.shortForm()+" | --"+parser.optAlpha.longForm()  +" = allows JSecure to use letters while generating the password (DEFAULT <???>).\n" +
