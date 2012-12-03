@@ -43,24 +43,32 @@ public class Main extends CmdLineParser {
     }
 
     public static void main(String[] args) {
+        int EXIT_STATUS=0;
+        /**EXIT STATUES:
+         *  0 = no errors
+         *  1 = wrong or illegal option
+         *  2 = unknown option
+         *  3 = unknown error
+         * */
+
         /**
         * Main method,here everithing will take place(parsing of the options,generation of the secure password,etc...)
-        * USAGE: java Main <options></options>
         */
 
-        Main main = new Main();
-        Parser parser = new Parser();
+        Parser parser = new Parser(); //The Parser class will take care of all the options
         SecurePassword pass = new SecurePassword();
 
-        try {
-            parser.parse(args);   //Try to parse the args
+        try { //Try to parse the args
+            parser.parse(args);
         } catch (IllegalOptionValueException e) {
             e.printStackTrace();
+            EXIT_STATUS=1;
         } catch (UnknownOptionException e) {
             e.printStackTrace();
+            EXIT_STATUS=2;
         }
 
-        if (((Boolean) parser.getOptionValue(parser.optHelp))) {
+        if (((Boolean) parser.getOptionValue(parser.optHelp))) { //IF the -h | --help option has been used IGNORE the others and show the message,then quit
             System.out.println("JSecure is a OPEN SOURCE software written in java that helps you generating strong passwords based on your needs.\n= AVAIABLE OPTIONS =\n" +
                     " -"+parser.optGUI.shortForm()  +" | --"+parser.optGUI.longForm()    +" = asks JSecure to show its nice GUI (DEFAULT <???>).\n" +
                     " -"+parser.optVvv.shortForm()  +" | --"+parser.optVvv.longForm()    +" = tells JSecure to speak loud (DEFAULT <???>).\n" +
@@ -71,15 +79,27 @@ public class Main extends CmdLineParser {
                     " -"+parser.optHelp.shortForm()+" | --"+parser.optHelp.longForm()    +" = asks JSecure to show you this help menu.\n" +
                     " -? | --credits "                                                   +" = asks to JSecure to show the credits/about informations.\n" +    //TODO:credits/about option
                     "\nUSAGE: java Main <options> \n" +
-                    "       java -jar Main <options>");
-        } else {
-            pass.setAlpha((Boolean) parser.getOptionValue(parser.optAlpha));
-            pass.setNumeric((Boolean) parser.getOptionValue(parser.optNum));
-            pass.setPunctuation((Boolean) parser.getOptionValue(parser.optPunct));
-            pass.setLength((Integer) parser.getOptionValue(parser.optLen));
+                    "       java -jar JSecure.jar <options>");
+        } else { //ELSE get the values from the other options
+
+            /*
+            *========================NOTE========================
+            *If an option has not been used it returns NULL. So let's say i run:
+            *  "java -jar JSecure.jar -a -l 10 -p"
+            *-n will be null,so:
+            * "pass.setNumeric((Boolean) parser.getOptionValue(parser.optNum));"
+            *will set the isNumeric to NULL!
+            *Be sure to check if we pass NULL to a Setter to make it "ignore" and leave the default option!
+            * */
+
+            /**SET THE NEEDED PARAMETERS TO GENERATE THE PASSWORD*/
+            pass.setAlpha((Boolean) parser.getOptionValue(parser.optAlpha)); //Set isAlpha
+            pass.setNumeric((Boolean) parser.getOptionValue(parser.optNum)); //Set isNumeric
+            pass.setPunctuation((Boolean) parser.getOptionValue(parser.optPunct)); //Set isPunc
+            pass.setLength((Integer) parser.getOptionValue(parser.optLen)); //Set passLength
         }
 
-        System.exit(0);
+        System.exit(EXIT_STATUS);
     }
 
 
