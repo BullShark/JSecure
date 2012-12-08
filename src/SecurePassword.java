@@ -1,6 +1,3 @@
-import sun.nio.cs.Surrogate;
-import sun.org.mozilla.javascript.ast.NewExpression;
-
 import java.util.Random;
 
 /**
@@ -87,14 +84,9 @@ public class SecurePassword implements BackendReqs {
 
         return pass;
     }
+
     @Override
     public String toString() {
         return pass;
-    }
-
-    private class InvalidPasswordException extends Throwable {
-        public InvalidPasswordException(String s) {
-            //todo Implement Me
-        }
     }
 }
