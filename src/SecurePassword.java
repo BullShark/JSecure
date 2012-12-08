@@ -1,3 +1,8 @@
+import sun.nio.cs.Surrogate;
+import sun.org.mozilla.javascript.ast.NewExpression;
+
+import java.util.Random;
+
 /**
  * Created with IntelliJ IDEA.
  * User: bull
@@ -10,12 +15,14 @@ public class SecurePassword implements BackendReqs {
     private String pass;
     private boolean isAlpha, isNumeric, isPunc;
     private int passLength;
+    private Random generator;
 
-    public SecurePassword() {
+    public SecurePassword(boolean isA, boolean isN, boolean isP) {
         pass = "";
-        isAlpha = false;
-        isNumeric = false;
-        isPunc = false;
+        isAlpha = isA;
+        isNumeric = isN;
+        isPunc = isP;
+        generator = new Random(); //todo Range for alpha, numeric, punctuation
     }
 
     /**************************************************************************
@@ -64,8 +71,30 @@ public class SecurePassword implements BackendReqs {
         passLength = len;
     }
 
+    /**************************************************************************
+     * Miscellaneous
+     */
+    public String generateNew() throws InvalidPasswordException {
+        if(isAlpha == false && isNumeric == false && isPunc == false) {
+            throw new InvalidPasswordException("Password must contain one or more types");
+        } else if(length = 0) {
+            throw new InvalidPasswordException("Password cannot be zero in length");
+        }
+
+        for(int x=0; x<passLength; x++) {
+            ;//todo use continue if regex doesn't match to skip the incrementing
+        }
+
+        return pass;
+    }
     @Override
     public String toString() {
         return pass;
+    }
+
+    private class InvalidPasswordException extends Throwable {
+        public InvalidPasswordException(String s) {
+            //todo Implement Me
+        }
     }
 }

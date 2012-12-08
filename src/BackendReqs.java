@@ -14,7 +14,5 @@ public interface BackendReqs {
     boolean getNumeric();
     boolean getPunctuation();
     int getLength();
-
-    String toString();
-
+    String generateNew() throws Exception;
 }
