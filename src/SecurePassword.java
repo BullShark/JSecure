@@ -1,17 +1,13 @@
-import java.util.Random;
-
 /**
- * Created with IntelliJ IDEA.
- * User: bull
- * Date: 12/1/12
- * Time: 10:58 PM
  * todo insert GPLv3 here
  */
+
+import java.util.Random;
 
 public class SecurePassword implements BackendReqs {
     private String pass;
     private boolean isAlpha, isNumeric, isPunc;
-    private int passLength;
+    private int passLen;
     private Random generator;
 
     public SecurePassword(boolean isA, boolean isN, boolean isP) {
@@ -42,7 +38,7 @@ public class SecurePassword implements BackendReqs {
 
     @Override
     public int getLength() {
-        return passLength;
+        return passLen;
     }
 
     /**************************************************************************
@@ -65,7 +61,7 @@ public class SecurePassword implements BackendReqs {
 
     @Override
     public void setLength(int len) {
-        passLength = len;
+        passLen = len;
     }
 
     /**************************************************************************
@@ -78,8 +74,9 @@ public class SecurePassword implements BackendReqs {
             throw new InvalidPasswordException("Password cannot be zero in length");
         }
 
-        for(int x=0; x<passLength; x++) {
-            ;//todo use continue if regex doesn't match to skip the incrementing
+
+        for(int x=0; x<passLen; x++) {
+            generator.nextInt(128);
         }
 
         return pass;
