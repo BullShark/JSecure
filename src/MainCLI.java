@@ -51,6 +51,7 @@ public class MainCLI extends CmdLineParser {
          *  2 = unknown option
          *  3 = unknown error
          * */
+        boolean verbose=false,help;
 
         Parser parser = new Parser(); //The Parser class will take care of all the options
         SecurePassword pass = new SecurePassword();
@@ -58,13 +59,16 @@ public class MainCLI extends CmdLineParser {
         try { //Try to parse the args
             parser.parse(args);
 
-            if (((Boolean) parser.getOptionValue(parser.optHelp))) { //IF the -h | --help option has been used IGNORE the others and show the message,then quit
+            //verbose = (Boolean)parser.getOptionValue(parser.optVvv);
+            //help = parser.getOptionValue(parser.optHelp).equals(null)?false:true; //TODO:Fix NullPointException
+
+            if ((Boolean)parser.getOptionValue(parser.optHelp)) { //IF the -h | --help option has been used IGNORE the others and show the message,then quit
                 System.out.println("JSecure is a OPEN SOURCE software written in java that helps you generating strong passwords based on your needs.\n= AVAIABLE OPTIONS =\n" +
-                        " -"+parser.optVvv.shortForm()  +" | --"+parser.optVvv.longForm()    +" = tells JSecure to speak loud (DEFAULT <???>).\n" +
-                        " -"+parser.optNum.shortForm()  +" | --"+parser.optNum.longForm()    +" = allows JSecure to use numbers while generating the password (DEFAULT <???>).\n" +
-                        " -"+parser.optAlpha.shortForm()+" | --"+parser.optAlpha.longForm()  +" = allows JSecure to use letters while generating the password (DEFAULT <???>).\n" +
-                        " -"+parser.optPunct.shortForm()  +" | --"+parser.optPunct.longForm()+" = allows JSecure to use punctuation characters while generating the password (DEFAULT <???>).\n" +
-                        " -"+parser.optLen.shortForm()+" | --"+parser.optLen.longForm()+" <value>"+" = tells JSecure the wished length for the password (DEFAULT: <???>).\n" +
+                        " -"+parser.optVvv.shortForm()  +" | --"+parser.optVvv.longForm()    +" = tells JSecure to speak loud (DEFAULT false).\n" +
+                        " -"+parser.optNum.shortForm()  +" | --"+parser.optNum.longForm()    +" = allows JSecure to use numbers while generating the password (DEFAULT true).\n" +
+                        " -"+parser.optAlpha.shortForm()+" | --"+parser.optAlpha.longForm()  +" = allows JSecure to use letters while generating the password (DEFAULT true).\n" +
+                        " -"+parser.optPunct.shortForm()  +" | --"+parser.optPunct.longForm()+" = allows JSecure to use punctuation characters while generating the password (DEFAULT false).\n" +
+                        " -"+parser.optLen.shortForm()+" | --"+parser.optLen.longForm()+" <value>"+" = tells JSecure the wished length for the password (DEFAULT 16).\n" +
                         " -"+parser.optHelp.shortForm()+" | --"+parser.optHelp.longForm()    +" = asks JSecure to show you this help menu.\n" +
                         " -? | --credits "                                                   +" = asks to JSecure to show the credits/about informations.\n" +    //TODO:credits/about option
                         "\nUSAGE: java Main <options> \n" +
@@ -82,24 +86,29 @@ public class MainCLI extends CmdLineParser {
                 **/
 
                 /**SET THE NEEDED PARAMETERS TO GENERATE THE PASSWORD*/
-                pass.setAlpha((Boolean) parser.getOptionValue(parser.optAlpha)); //Set isAlpha
-                pass.setNumeric((Boolean) parser.getOptionValue(parser.optNum)); //Set isNumeric
-                pass.setPunctuation((Boolean) parser.getOptionValue(parser.optPunct)); //Set isPunc
-                pass.setLength((Integer) parser.getOptionValue(parser.optLen)); //Set passLength
+                //IF <cond> is null ? set default : get value
+                pass.setAlpha(parser.getOptionValue(parser.optAlpha).equals(null) ? pass.getAlpha() : (Boolean)parser.getOptionValue(parser.optAlpha)); //Set isAlpha
+                pass.setNumeric(parser.getOptionValue(parser.optNum).equals(null) ? pass.getNumeric() : (Boolean)parser.getOptionValue(parser.optNum)); //Set isNumeric
+                pass.setPunctuation(parser.getOptionValue(parser.optPunct).equals(null) ? pass.getPunctuation() : (Boolean)parser.getOptionValue(parser.optPunct)); //Set isPunc
+                pass.setLength(parser.getOptionValue(parser.optLen).equals(null) ? pass.getLength() : (Integer)parser.getOptionValue(parser.optLen)); //Set passLength
+
+                if(verbose) System.out.println("NUM:"+pass.getNumeric()+"\nALPHA:"+pass.getAlpha()+"\nPUNC:"+pass.getPunctuation()+"\nLEN:"+pass.getLength());
             }
 
         } catch (IllegalOptionValueException e) {
-            //e.printStackTrace();
+            if(verbose) System.err.println(e);
             EXIT_STATUS=1;
         } catch (UnknownOptionException e) {
-            //e.printStackTrace();
+            if(verbose) System.err.println(e);
             EXIT_STATUS=2;
         } catch (NullPointerException e) {
-            //e.printStackTrace();
+            if(verbose) System.err.println(e);
             EXIT_STATUS=1;
         }
-        if(EXIT_STATUS != 0) System.out.println("USAGE: java Main -h \n " +
-                "java -jar JSecure.jar -h");
+
+        if(EXIT_STATUS != 0) System.out.println("USAGE: java MainCLI -h \n" +
+                                                "       java -jar JSecure.jar -h\n\n"+
+                                                "EXIT STATUS:"+EXIT_STATUS);
         System.exit(EXIT_STATUS);
     }
 
