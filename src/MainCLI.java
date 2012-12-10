@@ -26,7 +26,7 @@ public class MainCLI extends CmdLineParser {
         CmdLineParser.Option optNum;
         CmdLineParser.Option optPunct;
         CmdLineParser.Option optHelp;
-        //TODO: DICTIONARY and SCRUBBLED OPTIONS
+        //TODO: DICTIONARY and SCRUBBLED OPTIONS and ABOUT
 
         public Parser() {
             optVvv = this.addBooleanOption('v',"verbose");
@@ -42,7 +42,6 @@ public class MainCLI extends CmdLineParser {
         /**
          * Main method,here everything will take place(parsing of the options,generation of the secure password,etc...)
          */
-        //TODO: fix the "NO ARGS==ULLPOINT EXCEPTION"
 
         int EXIT_STATUS=0;
         /**EXIT STATUES:
@@ -51,7 +50,7 @@ public class MainCLI extends CmdLineParser {
          *  2 = unknown option
          *  3 = unknown error
          * */
-        boolean verbose=false,help;
+        boolean verbose=false,help=false;
 
         Parser parser = new Parser(); //The Parser class will take care of all the options
         SecurePassword pass = new SecurePassword();
@@ -59,10 +58,14 @@ public class MainCLI extends CmdLineParser {
         try { //Try to parse the args
             parser.parse(args);
 
-            //verbose = (Boolean)parser.getOptionValue(parser.optVvv);
-            //help = parser.getOptionValue(parser.optHelp).equals(null)?false:true; //TODO:Fix NullPointException
+            verbose = (Boolean)parser.getOptionValue(parser.optVvv);
+            try {
+                help = (Boolean) parser.getOptionValue(parser.optHelp);
+            }catch(NullPointerException e) {
+                help = false;
+            }
 
-            if ((Boolean)parser.getOptionValue(parser.optHelp)) { //IF the -h | --help option has been used IGNORE the others and show the message,then quit
+            if (help) { //IF the -h | --help option has been used IGNORE the others and show the message,then quit
                 System.out.println("JSecure is a OPEN SOURCE software written in java that helps you generating strong passwords based on your needs.\n= AVAIABLE OPTIONS =\n" +
                         " -"+parser.optVvv.shortForm()  +" | --"+parser.optVvv.longForm()    +" = tells JSecure to speak loud (DEFAULT false).\n" +
                         " -"+parser.optNum.shortForm()  +" | --"+parser.optNum.longForm()    +" = allows JSecure to use numbers while generating the password (DEFAULT true).\n" +
@@ -73,6 +76,7 @@ public class MainCLI extends CmdLineParser {
                         " -? | --credits "                                                   +" = asks to JSecure to show the credits/about informations.\n" +    //TODO:credits/about option
                         "\nUSAGE: java Main <options> \n" +
                         "       java -jar JSecure.jar <options>");
+
             } else { //ELSE get the values from the other options
 
                 /*
@@ -86,11 +90,30 @@ public class MainCLI extends CmdLineParser {
                 **/
 
                 /**SET THE NEEDED PARAMETERS TO GENERATE THE PASSWORD*/
-                //IF <cond> is null ? set default : get value
-                pass.setAlpha(parser.getOptionValue(parser.optAlpha).equals(null) ? pass.getAlpha() : (Boolean)parser.getOptionValue(parser.optAlpha)); //Set isAlpha
-                pass.setNumeric(parser.getOptionValue(parser.optNum).equals(null) ? pass.getNumeric() : (Boolean)parser.getOptionValue(parser.optNum)); //Set isNumeric
-                pass.setPunctuation(parser.getOptionValue(parser.optPunct).equals(null) ? pass.getPunctuation() : (Boolean)parser.getOptionValue(parser.optPunct)); //Set isPunc
-                pass.setLength(parser.getOptionValue(parser.optLen).equals(null) ? pass.getLength() : (Integer)parser.getOptionValue(parser.optLen)); //Set passLength
+                //SET ALPHA
+                try {
+                    pass.setAlpha((Boolean)parser.getOptionValue(parser.optAlpha));
+                }catch(NullPointerException e) {
+                    if(verbose) System.err.println(e);  //Leave default option's value
+                }
+                //SET NUMERIC
+                try {
+                    pass.setNumeric((Boolean)parser.getOptionValue(parser.optNum));
+                }catch(NullPointerException e) {
+                    if(verbose) System.err.println(e);  //Leave default option's value
+                }
+                //SET PUNCTUATION
+                try {
+                    pass.setPunctuation((Boolean)parser.getOptionValue(parser.optPunct));
+                }catch(NullPointerException e) {
+                    if(verbose) System.err.println(e);  //Leave default option's value
+                }
+                //SET LENGTH
+                try {
+                    pass.setLength((Integer)parser.getOptionValue(parser.optNum));
+                }catch(NullPointerException e) {
+                    if(verbose) System.err.println(e);  //Leave default option's value
+                }
 
                 if(verbose) System.out.println("NUM:"+pass.getNumeric()+"\nALPHA:"+pass.getAlpha()+"\nPUNC:"+pass.getPunctuation()+"\nLEN:"+pass.getLength());
             }
@@ -102,7 +125,7 @@ public class MainCLI extends CmdLineParser {
             if(verbose) System.err.println(e);
             EXIT_STATUS=2;
         } catch (NullPointerException e) {
-            if(verbose) System.err.println(e);
+            if(verbose) e.printStackTrace();
             EXIT_STATUS=1;
         }
 
