@@ -11,7 +11,7 @@ public class SecurePassword implements BackendReqs {
     private Random generator;
 
     public SecurePassword(boolean isA, boolean isN, boolean isP, int len) throws InvalidPasswordException {
-//        if(isAlpha == false && isNumeric == false && !isPunc == false) {
+//        if(isAlpha == false && isNumeric == false && !isPunc == false) { //@todo fix me
 //            throw new InvalidPasswordException("Password must contain one or more types");
 //        } else if(len == 0) {
 //            throw new InvalidPasswordException("Password cannot be zero in length");
@@ -114,7 +114,6 @@ public class SecurePassword implements BackendReqs {
                     }
                 x--; // A new character wasn't added
             }
-
         }
         return pass;
     }
