@@ -71,13 +71,13 @@ public class MainCLI extends CmdLineParser {
             }
 
             if (help) { //IF the -h | --help option has been used IGNORE the others and show the message,then quit
-                //TODO: "dynamic" DEFAULT <default value> (read default value from class)
+
                 System.out.println("JSecure is a OPEN SOURCE software written in java that helps you generating strong passwords based on your needs.\n= AVAIABLE OPTIONS =\n" +
                         " -"+parser.optVvv.shortForm()  +" | --"+parser.optVvv.longForm()    +" = tells JSecure to speak loud (DEFAULT false).\n" +
-                        " -"+parser.optNum.shortForm()  +" | --"+parser.optNum.longForm()    +" = allows JSecure to use numbers while generating the password (DEFAULT true).\n" +
-                        " -"+parser.optAlpha.shortForm()+" | --"+parser.optAlpha.longForm()  +" = allows JSecure to use letters while generating the password (DEFAULT true).\n" +
-                        " -"+parser.optPunct.shortForm()  +" | --"+parser.optPunct.longForm()+" = allows JSecure to use punctuation characters while generating the password (DEFAULT false).\n" +
-                        " -"+parser.optLen.shortForm()+" | --"+parser.optLen.longForm()+" <value>"+" = tells JSecure the wished length for the password (DEFAULT 16).\n" +
+                        " -"+parser.optNum.shortForm()  +" | --"+parser.optNum.longForm()    +" = allows JSecure to use numbers while generating the password (DEFAULT "+pass.getNumeric()+").\n" +
+                        " -"+parser.optAlpha.shortForm()+" | --"+parser.optAlpha.longForm()  +" = allows JSecure to use letters while generating the password (DEFAULT "+pass.getAlpha()+").\n" +
+                        " -"+parser.optPunct.shortForm()  +" | --"+parser.optPunct.longForm()+" = allows JSecure to use punctuation characters while generating the password (DEFAULT "+pass.getPunctuation()+").\n" +
+                        " -"+parser.optLen.shortForm()+" | --"+parser.optLen.longForm()+" <value>"+" = tells JSecure the wished length for the password (DEFAULT "+pass.getLength()+").\n" +
                         " -"+parser.optHelp.shortForm()+" | --"+parser.optHelp.longForm()    +" = asks JSecure to show you this help menu.\n" +
                         " -? | --credits "                                                   +" = asks to JSecure to show the credits/about informations.\n" +    //TODO:credits/about option
                         "\nUSAGE: java Main <options> \n" +

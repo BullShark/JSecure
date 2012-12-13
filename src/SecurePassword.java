@@ -10,6 +10,16 @@ public class SecurePassword implements BackendReqs {
     private int passLen;
     private Random generator;
 
+    public SecurePassword() {
+        /**Default constructor using default values*/
+        pass = "";
+        isAlpha = true;
+        isNumeric = true;
+        isPunc = false;
+        passLen = 16;
+        generator = new Random(); //todo Range for alpha, numeric, punctuation
+    }
+
     public SecurePassword(boolean isA, boolean isN, boolean isP, int len) throws InvalidPasswordException {
 //        if(isAlpha == false && isNumeric == false && !isPunc == false) { //@todo fix me
 //            throw new InvalidPasswordException("Password must contain one or more types");
