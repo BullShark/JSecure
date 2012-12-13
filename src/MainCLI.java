@@ -38,7 +38,7 @@ public class MainCLI extends CmdLineParser {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidPasswordException {
         /**
          * Main method,here everything will take place(parsing of the options,generation of the secure password,etc...)
          */
@@ -50,7 +50,7 @@ public class MainCLI extends CmdLineParser {
          *  2 = unknown option
          *  3 = unknown error
          * */
-        boolean verbose=false,help=false;
+        boolean verbose=false,help;
 
         Parser parser = new Parser(); //The Parser class will take care of all the options
         SecurePassword pass = new SecurePassword();
@@ -58,14 +58,20 @@ public class MainCLI extends CmdLineParser {
         try { //Try to parse the args
             parser.parse(args);
 
-            verbose = (Boolean)parser.getOptionValue(parser.optVvv);
-            try {
+            try {   //Try to get verbose,if null it's false
+                verbose = (Boolean)parser.getOptionValue(parser.optVvv);
+            }catch(NullPointerException e) {
+                verbose=false;
+            }
+
+            try {   //Try to get help,if null it's false
                 help = (Boolean) parser.getOptionValue(parser.optHelp);
             }catch(NullPointerException e) {
                 help = false;
             }
 
             if (help) { //IF the -h | --help option has been used IGNORE the others and show the message,then quit
+                //TODO: "dynamic" DEFAULT <default value> (read default value from class)
                 System.out.println("JSecure is a OPEN SOURCE software written in java that helps you generating strong passwords based on your needs.\n= AVAIABLE OPTIONS =\n" +
                         " -"+parser.optVvv.shortForm()  +" | --"+parser.optVvv.longForm()    +" = tells JSecure to speak loud (DEFAULT false).\n" +
                         " -"+parser.optNum.shortForm()  +" | --"+parser.optNum.longForm()    +" = allows JSecure to use numbers while generating the password (DEFAULT true).\n" +
@@ -116,21 +122,24 @@ public class MainCLI extends CmdLineParser {
                 }
 
                 if(verbose) System.out.println("NUM:"+pass.getNumeric()+"\nALPHA:"+pass.getAlpha()+"\nPUNC:"+pass.getPunctuation()+"\nLEN:"+pass.getLength());
+
+                /**Display generated password*/
+                System.out.println(pass.generateNew());
             }
 
-        } catch (IllegalOptionValueException e) {
+        } catch(IllegalOptionValueException e) {
             if(verbose) System.err.println(e);
             EXIT_STATUS=1;
-        } catch (UnknownOptionException e) {
+        } catch(UnknownOptionException e) {
             if(verbose) System.err.println(e);
             EXIT_STATUS=2;
-        } catch (NullPointerException e) {
+        } catch(NullPointerException e) {
             if(verbose) e.printStackTrace();
             EXIT_STATUS=1;
         }
 
-        if(EXIT_STATUS != 0) System.out.println("USAGE: java MainCLI -h \n" +
-                                                "       java -jar JSecure.jar -h\n\n"+
+        if(EXIT_STATUS != 0) System.out.println("USAGE: java MainCLI <options> \n" +
+                                                "       java -jar JSecure.jar <options>\n\nUse -h or --help to get a list of available options.\n"+
                                                 "EXIT STATUS:"+EXIT_STATUS);
         System.exit(EXIT_STATUS);
     }
