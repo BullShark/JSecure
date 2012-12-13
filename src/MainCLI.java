@@ -116,15 +116,24 @@ public class MainCLI extends CmdLineParser {
                 }
                 //SET LENGTH
                 try {
-                    pass.setLength((Integer)parser.getOptionValue(parser.optNum));
+                    int l=(Integer)parser.getOptionValue(parser.optLen);
+                    if(l > 0) {
+                        pass.setLength(l);
+                    }else {
+                        System.out.println("WARNING: length too small(<=0),setting length to default value.");
+                    }
                 }catch(NullPointerException e) {
                     if(verbose) System.err.println(e);  //Leave default option's value
                 }
 
                 if(verbose) System.out.println("NUM:"+pass.getNumeric()+"\nALPHA:"+pass.getAlpha()+"\nPUNC:"+pass.getPunctuation()+"\nLEN:"+pass.getLength());
-
                 /**Display generated password*/
-                System.out.println(pass.generateNew());
+                if(pass.getAlpha() || pass.getNumeric() || pass.getPunctuation()) {
+                    System.out.println(pass.generateNew());
+                }else {
+                    System.err.println("ERROR: couldn't generate a password, you must specify at least 1 type of pattern to generate.");
+                    EXIT_STATUS=1;
+                }
             }
 
         } catch(IllegalOptionValueException e) {
@@ -139,7 +148,7 @@ public class MainCLI extends CmdLineParser {
         }
 
         if(EXIT_STATUS != 0) System.out.println("USAGE: java MainCLI <options> \n" +
-                                                "       java -jar JSecure.jar <options>\n\nUse -h or --help to get a list of available options.\n"+
+                                                "       java -jar JSecure.jar <options>\n\nUse -h or --help to get a list of all available options.\n"+
                                                 "EXIT STATUS:"+EXIT_STATUS);
         System.exit(EXIT_STATUS);
     }

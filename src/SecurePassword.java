@@ -13,8 +13,8 @@ public class SecurePassword implements BackendReqs {
     public SecurePassword() {
         /**Default constructor using default values*/
         pass = "";
-        isAlpha = true;
-        isNumeric = true;
+        isAlpha = false;
+        isNumeric = false;
         isPunc = false;
         passLen = 16;
         generator = new Random(); //todo Range for alpha, numeric, punctuation
