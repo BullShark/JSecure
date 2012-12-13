@@ -27,59 +27,62 @@ public class MainCLI extends CmdLineParser {
         CmdLineParser.Option optPunct;
         CmdLineParser.Option optHelp;
         //TODO: DICTIONARY and SCRUBBLED OPTIONS and ABOUT
+        //TODO: debug instead of verbose
 
         public Parser() {
-            optVvv = this.addBooleanOption('v',"verbose");
-            optAlpha = this.addBooleanOption('a',"alpha");
-            optNum = this.addBooleanOption('n',"numeric");
-            optPunct = this.addBooleanOption('p',"punct");
-            optHelp = this.addBooleanOption('h',"help");
-            optLen = this.addIntegerOption('l',"length");
+            optVvv = this.addBooleanOption('v', "verbose");
+            optAlpha = this.addBooleanOption('a', "alpha");
+            optNum = this.addBooleanOption('n', "numeric");
+            optPunct = this.addBooleanOption('p', "punct");
+            optHelp = this.addBooleanOption('h', "help");
+            optLen = this.addIntegerOption('l', "length");
         }
     }
 
-    public static void main(String[] args) throws InvalidPasswordException {
+    public static void main(String[] args) {
         /**
          * Main method,here everything will take place(parsing of the options,generation of the secure password,etc...)
          */
+        boolean isAlpha = false, isNum = false, isPunc = false;
+        int l = 16;
 
-        int EXIT_STATUS=0;
+        int EXIT_STATUS = 0;
         /**EXIT STATUES:
          *  0 = no errors
          *  1 = wrong or illegal option
          *  2 = unknown option
          *  3 = unknown error
          * */
-        boolean verbose=false,help;
+        boolean verbose = false, help;
 
         Parser parser = new Parser(); //The Parser class will take care of all the options
-        SecurePassword pass = new SecurePassword();
+        SecurePassword pass;
 
         try { //Try to parse the args
             parser.parse(args);
 
             try {   //Try to get verbose,if null it's false
-                verbose = (Boolean)parser.getOptionValue(parser.optVvv);
-            }catch(NullPointerException e) {
-                verbose=false;
+                verbose = (Boolean) parser.getOptionValue(parser.optVvv);
+            } catch (NullPointerException e) {
+                verbose = false;
             }
 
             try {   //Try to get help,if null it's false
                 help = (Boolean) parser.getOptionValue(parser.optHelp);
-            }catch(NullPointerException e) {
+            } catch (NullPointerException e) {
                 help = false;
             }
 
             if (help) { //IF the -h | --help option has been used IGNORE the others and show the message,then quit
 
                 System.out.println("JSecure is a OPEN SOURCE software written in java that helps you generating strong passwords based on your needs.\n= AVAIABLE OPTIONS =\n" +
-                        " -"+parser.optVvv.shortForm()  +" | --"+parser.optVvv.longForm()    +" = tells JSecure to speak loud (DEFAULT false).\n" +
-                        " -"+parser.optNum.shortForm()  +" | --"+parser.optNum.longForm()    +" = allows JSecure to use numbers while generating the password (DEFAULT "+pass.getNumeric()+").\n" +
-                        " -"+parser.optAlpha.shortForm()+" | --"+parser.optAlpha.longForm()  +" = allows JSecure to use letters while generating the password (DEFAULT "+pass.getAlpha()+").\n" +
-                        " -"+parser.optPunct.shortForm()  +" | --"+parser.optPunct.longForm()+" = allows JSecure to use punctuation characters while generating the password (DEFAULT "+pass.getPunctuation()+").\n" +
-                        " -"+parser.optLen.shortForm()+" | --"+parser.optLen.longForm()+" <value>"+" = tells JSecure the wished length for the password (DEFAULT "+pass.getLength()+").\n" +
-                        " -"+parser.optHelp.shortForm()+" | --"+parser.optHelp.longForm()    +" = asks JSecure to show you this help menu.\n" +
-                        " -? | --credits "                                                   +" = asks to JSecure to show the credits/about informations.\n" +    //TODO:credits/about option
+                        " -" + parser.optVvv.shortForm() + " | --" + parser.optVvv.longForm() + " = tells JSecure to speak loud (DEFAULT false).\n" +
+                        " -" + parser.optNum.shortForm() + " | --" + parser.optNum.longForm() + " = allows JSecure to use numbers while generating the password (DEFAULT " + isNum + ").\n" +
+                        " -" + parser.optAlpha.shortForm() + " | --" + parser.optAlpha.longForm() + " = allows JSecure to use letters while generating the password (DEFAULT " + isAlpha + ").\n" +
+                        " -" + parser.optPunct.shortForm() + " | --" + parser.optPunct.longForm() + " = allows JSecure to use punctuation characters while generating the password (DEFAULT " + isPunc + ").\n" +
+                        " -" + parser.optLen.shortForm() + " | --" + parser.optLen.longForm() + " <value>" + " = tells JSecure the wished length for the password (DEFAULT " + l + ").\n" +
+                        " -" + parser.optHelp.shortForm() + " | --" + parser.optHelp.longForm() + " = asks JSecure to show you this help menu.\n" +
+                        " -? | --credits " + " = asks to JSecure to show the credits/about informations.\n" +    //TODO:credits/about option
                         "\nUSAGE: java Main <options> \n" +
                         "       java -jar JSecure.jar <options>");
 
@@ -98,58 +101,64 @@ public class MainCLI extends CmdLineParser {
                 /**SET THE NEEDED PARAMETERS TO GENERATE THE PASSWORD*/
                 //SET ALPHA
                 try {
-                    pass.setAlpha((Boolean)parser.getOptionValue(parser.optAlpha));
-                }catch(NullPointerException e) {
-                    if(verbose) System.err.println(e);  //Leave default option's value
+                    isAlpha = (Boolean) parser.getOptionValue(parser.optAlpha);
+                } catch (NullPointerException e) {
+                    if (verbose) System.err.println(e);  //Leave default option's value
                 }
                 //SET NUMERIC
                 try {
-                    pass.setNumeric((Boolean)parser.getOptionValue(parser.optNum));
-                }catch(NullPointerException e) {
-                    if(verbose) System.err.println(e);  //Leave default option's value
+                    isNum = (Boolean) parser.getOptionValue(parser.optNum);
+                } catch (NullPointerException e) {
+                    if (verbose) System.err.println(e);  //Leave default option's value
                 }
                 //SET PUNCTUATION
                 try {
-                    pass.setPunctuation((Boolean)parser.getOptionValue(parser.optPunct));
-                }catch(NullPointerException e) {
-                    if(verbose) System.err.println(e);  //Leave default option's value
+                    isPunc = (Boolean) parser.getOptionValue(parser.optPunct);
+                } catch (NullPointerException e) {
+                    if (verbose) System.err.println(e);  //Leave default option's value
                 }
                 //SET LENGTH
                 try {
-                    int l=(Integer)parser.getOptionValue(parser.optLen);
-                    if(l > 0) {
-                        pass.setLength(l);
-                    }else {
-                        System.out.println("WARNING: length too small(<=0),setting length to default value.");
-                    }
-                }catch(NullPointerException e) {
-                    if(verbose) System.err.println(e);  //Leave default option's value
+                    l = (Integer) parser.getOptionValue(parser.optLen);
+                } catch (NullPointerException e) {
+                    if (verbose) System.err.println(e);  //Leave default option's value
                 }
 
-                if(verbose) System.out.println("NUM:"+pass.getNumeric()+"\nALPHA:"+pass.getAlpha()+"\nPUNC:"+pass.getPunctuation()+"\nLEN:"+pass.getLength());
+
+                if (verbose)
+                    System.out.println("NUM:" + isNum + "\nALPHA:" + isAlpha + "\nPUNC:" + isPunc + "\nLEN:" + l);
+
                 /**Display generated password*/
-                if(pass.getAlpha() || pass.getNumeric() || pass.getPunctuation()) {
-                    System.out.println(pass.generateNew());
-                }else {
-                    System.err.println("ERROR: couldn't generate a password, you must specify at least 1 type of pattern to generate.");
-                    EXIT_STATUS=1;
+                pass = new SecurePassword(isAlpha, isNum, isPunc, l);
+                if(isAlpha || isNum || isPunc) {
+                if (verbose) {
+                    System.out.println("[*]PASSWORD STRENGTH:" + pass.getPassStrength());
+                    System.out.println("[*]GENERATED NEW PASSWORD:");
+                }
+                System.out.print(pass.generateNew() + "\n");
+                } else {
+                    System.err.println("ERROR: you must use at least one pattern(-a,-n or -p)!");
+                    EXIT_STATUS=3;
                 }
             }
 
-        } catch(IllegalOptionValueException e) {
-            if(verbose) System.err.println(e);
-            EXIT_STATUS=1;
-        } catch(UnknownOptionException e) {
-            if(verbose) System.err.println(e);
-            EXIT_STATUS=2;
-        } catch(NullPointerException e) {
-            if(verbose) e.printStackTrace();
-            EXIT_STATUS=1;
+        } catch (IllegalOptionValueException e) {
+            if (verbose) System.err.println(e);
+            EXIT_STATUS = 1;
+        } catch (UnknownOptionException e) {
+            if (verbose) System.err.println(e);
+            EXIT_STATUS = 2;
+        } catch (NullPointerException e) {
+            if (verbose) System.err.println(e);
+            EXIT_STATUS = 1;
+        } catch (InvalidPasswordException e) {
+            if (verbose) System.err.println(e);
+            EXIT_STATUS = 3;
         }
 
-        if(EXIT_STATUS != 0) System.out.println("USAGE: java MainCLI <options> \n" +
-                                                "       java -jar JSecure.jar <options>\n\nUse -h or --help to get a list of all available options.\n"+
-                                                "EXIT STATUS:"+EXIT_STATUS);
+        if (EXIT_STATUS != 0) System.out.println("USAGE: java MainCLI <options> \n" +
+                "       java -jar JSecure.jar <options>\n\nUse -h or --help to get a list of all available options.\n" +
+                "EXIT STATUS:" + EXIT_STATUS);
         System.exit(EXIT_STATUS);
     }
 
