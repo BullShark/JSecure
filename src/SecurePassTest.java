@@ -12,6 +12,8 @@ public class SecurePassTest {
             System.out.println(spass.generateNew());
         } catch(InvalidPasswordException e) {
             e.printStackTrace();
+        } catch(InvalidPasswordLengthException e) {
+            e.printStackTrace();
         }
     }
 }

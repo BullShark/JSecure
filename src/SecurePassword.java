@@ -10,15 +10,15 @@ public class SecurePassword implements BackendReqs {
     private int passLen;
     private Random generator;
 
-    public SecurePassword() throws InvalidPasswordException {
+    public SecurePassword() throws InvalidPasswordException, InvalidPasswordLengthException {
         this(true, true, true, 16);
     }
 
-    public SecurePassword(boolean isA, boolean isN, boolean isP, int len) throws InvalidPasswordException {
+    public SecurePassword(boolean isA, boolean isN, boolean isP, int len) throws InvalidPasswordException, InvalidPasswordLengthException {
         if(isA == false && isN == false && isP == false) {
             throw new InvalidPasswordException("Password must contain one or more types");
         } else if(len == 0) {
-            throw new InvalidPasswordException("Password cannot be zero in length");
+            throw new InvalidPasswordLengthException("Password cannot be zero in length");
         }
         pass = "";
         isAlpha = isA;
@@ -77,11 +77,11 @@ public class SecurePassword implements BackendReqs {
     /**************************************************************************
      * Miscellaneous
      */
-    public String generateNew() throws InvalidPasswordException {
+    public String generateNew() throws InvalidPasswordException, InvalidPasswordLengthException {
         if(isAlpha == false && isNumeric == false && isPunc == false) {
-            throw new InvalidPasswordException("Password must contain one or more types",);
+            throw new InvalidPasswordException("Password must contain one or more types");
         } else if(passLen == 0) {
-            throw new InvalidPasswordException("Password cannot be zero in length");
+            throw new InvalidPasswordLengthException("Password cannot be zero in length");
         }
 
         String ch; int ascii;

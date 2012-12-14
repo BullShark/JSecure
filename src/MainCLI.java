@@ -154,7 +154,9 @@ public class MainCLI extends CmdLineParser {
         } catch (InvalidPasswordException e) {
             if (verbose) System.err.println(e);
             EXIT_STATUS = 3;
-        }
+//        } catch (InvalidPasswordLengthException e) { //TODO implement me
+//
+//        }
 
         if (EXIT_STATUS != 0) System.out.println("USAGE: java MainCLI <options> \n" +
                 "       java -jar JSecure.jar <options>\n\nUse -h or --help to get a list of all available options.\n" +

@@ -13,6 +13,6 @@ public interface BackendReqs {
     boolean getAlpha();
     boolean getNumeric();
     boolean getPunctuation();
-    int getLength() throws InvalidPasswordException;
-    String generateNew() throws InvalidPasswordException;
+    int getLength();
+    String generateNew() throws InvalidPasswordException, InvalidPasswordLengthException;
 }
