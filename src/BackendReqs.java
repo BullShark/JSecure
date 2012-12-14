@@ -14,5 +14,5 @@ public interface BackendReqs {
     boolean getNumeric();
     boolean getPunctuation();
     int getLength();
-    String generateNew() throws InvalidPasswordException, InvalidPasswordLengthException;
+    String generateNew() throws InvalidPasswordException, ZeroPasswordLengthException;
 }

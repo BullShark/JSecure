@@ -154,7 +154,7 @@ public class MainCLI extends CmdLineParser {
         } catch (InvalidPasswordException e) {
             if (verbose) System.err.println(e);
             EXIT_STATUS = 3;
-//        } catch (InvalidPasswordLengthException e) { //TODO implement me
+//        } catch (ZeroPasswordLengthException e) { //TODO implement me
 //
 //        }
 

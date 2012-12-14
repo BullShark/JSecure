@@ -5,8 +5,8 @@
  * Time: 6:19 AM
  * To change this template use File | Settings | File Templates.
  */
-public class InvalidPasswordLengthException extends Exception {
-    public InvalidPasswordLengthException(String message) {
+public class ZeroPasswordLengthException extends Exception {
+    public ZeroPasswordLengthException(String message) {
         super(message);
     }
 }
