@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2012 Christopher Lemire <christopher.lemire@gmail.com>
+ * Copyright (C) 2012 Gabriel <zer0.cam0@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 public class MainGUI extends JPanel implements ActionListener {
     public MainGUI() {
         //setLayout(new MigLayout("hidemode 2, nogrid")); //todo
