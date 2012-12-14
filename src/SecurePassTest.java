@@ -8,7 +8,7 @@
 public class SecurePassTest {
     public static void main(String[] args) {
         try {
-            SecurePassword spass = new SecurePassword(true, true, true, 20);
+            SecurePassword spass = new SecurePassword();
             System.out.println(spass.generateNew());
         } catch(InvalidPasswordException e) {
             e.printStackTrace();

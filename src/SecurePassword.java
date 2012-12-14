@@ -10,28 +10,22 @@ public class SecurePassword implements BackendReqs {
     private int passLen;
     private Random generator;
 
-    public SecurePassword() {
-        /**Default constructor using default values*/
-        pass = "";
-        isAlpha = false;
-        isNumeric = false;
-        isPunc = false;
-        passLen = 16;
-        generator = new Random(); //todo Range for alpha, numeric, punctuation
+    public SecurePassword() throws InvalidPasswordException {
+        this(true, true, true, 16);
     }
 
     public SecurePassword(boolean isA, boolean isN, boolean isP, int len) throws InvalidPasswordException {
-//        if(isAlpha == false && isNumeric == false && !isPunc == false) { //@todo fix me
-//            throw new InvalidPasswordException("Password must contain one or more types");
-//        } else if(len == 0) {
-//            throw new InvalidPasswordException("Password cannot be zero in length");
-//        }
+        if(isA == false && isN == false && isP == false) {
+            throw new InvalidPasswordException("Password must contain one or more types");
+        } else if(len == 0) {
+            throw new InvalidPasswordException("Password cannot be zero in length");
+        }
         pass = "";
         isAlpha = isA;
         isNumeric = isN;
         isPunc = isP;
         passLen = len;
-        generator = new Random(); //todo Range for alpha, numeric, punctuation
+        generator = new Random();
     }
 
     /**************************************************************************
@@ -53,10 +47,7 @@ public class SecurePassword implements BackendReqs {
     }
 
     @Override
-    public int getLength() throws InvalidPasswordException {
-    if(passLen == 0) {
-        throw new InvalidPasswordException("Password cannot be zero in length");
-    }
+    public int getLength() {
         return passLen;
     }
 
@@ -87,11 +78,11 @@ public class SecurePassword implements BackendReqs {
      * Miscellaneous
      */
     public String generateNew() throws InvalidPasswordException {
-//        if(isAlpha == false && isNumeric == false && isPunc == false) {
-//            throw new InvalidPasswordException("Password must contain one or more types");
-//        } else if(passLen == 0) {
-//            throw new InvalidPasswordException("Password cannot be zero in length");
-//        }
+        if(isAlpha == false && isNumeric == false && isPunc == false) {
+            throw new InvalidPasswordException("Password must contain one or more types",);
+        } else if(passLen == 0) {
+            throw new InvalidPasswordException("Password cannot be zero in length");
+        }
 
         String ch; int ascii;
         for(int x=0; x<passLen; x++) {

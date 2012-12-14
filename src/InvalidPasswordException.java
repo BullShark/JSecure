@@ -6,5 +6,7 @@
 * To change this template use File | Settings | File Templates.
 */
 public class InvalidPasswordException extends Exception {
-    public InvalidPasswordException(String err) {}
+    public InvalidPasswordException(String message) {
+        super(message);
+    }
 }
