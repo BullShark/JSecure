@@ -132,7 +132,7 @@ public class MainCLI extends CmdLineParser {
                 pass = new SecurePassword(isAlpha, isNum, isPunc, l);
                 if(isAlpha || isNum || isPunc) {
                 if (verbose) {
-                    System.out.println("[*]PASSWORD STRENGTH:" + pass.getPassStrength());
+                    System.out.println("[*]PASSWORD STRENGTH:" + pass.getPassStrength()); //TODO PasswordStrength.java
                     System.out.println("[*]GENERATED NEW PASSWORD:");
                 }
                 System.out.print(pass.generateNew() + "\n");
