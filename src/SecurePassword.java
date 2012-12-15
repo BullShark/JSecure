@@ -83,7 +83,10 @@ public class SecurePassword implements BackendReqs {
     }
 
     @Override
-    public void setLength(int len) {
+    public void setLength(int len) throws ZeroPasswordLengthException {
+        if(len == 0) {
+            throw new ZeroPasswordLengthException("Password cannot be zero in length");
+        }
         passLen = len;
     }
 

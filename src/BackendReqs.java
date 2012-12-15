@@ -19,7 +19,7 @@ public interface BackendReqs {
     void setAlpha(boolean isAlpha);
     void setNumeric(boolean isNumeric);
     void setPunctuation(boolean isPunc);
-    void setLength(int len);
+    void setLength(int len) throws ZeroPasswordLengthException;
     boolean getAlpha();
     boolean getNumeric();
     boolean getPunctuation();
