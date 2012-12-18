@@ -93,11 +93,9 @@ public class SecurePassword implements BackendReqs {
     /**************************************************************************
      * Miscellaneous
      */
-    public String generateNew() throws InvalidPasswordException, ZeroPasswordLengthException {
+    public String generateNew() throws InvalidPasswordException {
         if(isAlpha == false && isNumeric == false && isPunc == false) {
             throw new InvalidPasswordException("Password must contain one or more types");
-        } else if(passLen == 0) {
-            throw new ZeroPasswordLengthException("Password cannot be zero in length");
         }
 
         String ch; int ascii;
