@@ -98,8 +98,8 @@ public class SecurePassword implements BackendReqs {
             throw new InvalidPasswordException("Password must contain one or more types");
         }
 
-        String ch; int ascii;
-        for(int x=0; x<passLen; x++) {
+        String ch; int ascii, x = 0;
+        while(x<passLen) {
             ascii = generator.nextInt(128);
             ch = String.valueOf(Character.toChars(ascii));
             /*
@@ -110,6 +110,7 @@ public class SecurePassword implements BackendReqs {
                     if(isAlpha) {
                         if(ch.matches("\\p{Alpha}{1}")) {
                             pass += ch;
+                            x++;
                             break;
                         }
                     }
@@ -117,6 +118,7 @@ public class SecurePassword implements BackendReqs {
                     if(isNumeric) {
                         if(ch.matches("\\p{Digit}{1}")) {
                             pass += ch;
+                            x++;
                             break;
                         }
                     }
@@ -124,10 +126,10 @@ public class SecurePassword implements BackendReqs {
                     if(isPunc) {
                         if(ch.matches("\\p{Punct}{1}")) {
                             pass += ch;
+                            x++;
                             break;
                         }
                     }
-                x--; // A new character wasn't added
             }
         }
         return pass;
